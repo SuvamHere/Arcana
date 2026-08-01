@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marina Bay Trivia — Golden Hour</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap');
+
+ .cinzel-decorative-unique {
+   font-family: "Cinzel Decorative", serif;
+    font-style: normal;
+ }
+
+  :root{
+    --navy: #1c1330;
+    --coral: #d85a30;
+    --amber: #f0a84a;
+    --gold: #fbd08a;
+    --green: #6fbf8b;
+    --red: #e0625a;
+    --glass: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.16);
+    --text-light: #fdf6ec;
+    --text-muted: rgba(253,246,236,0.68);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-light);
+    background: var(--navy);
+    min-height: 100vh;
+  }
+  .sky {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: linear-gradient(180deg,
+      #241733 0%,
+      #5a2c4a 30%,
+      #b84a3e 55%,
+      #e88a3e 75%,
+      #fbd08a 100%);
+    background-size: 100% 220%;
+    animation: driftSky 26s ease-in-out infinite alternate;
+  }
+  @keyframes driftSky {
+    0% { background-position: 0 0%; }
+    100% { background-position: 0 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) { .sky { animation: none; } }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 2rem;
+    background: rgba(28,19,48,0.35);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .brand { font-family: 'Cinzel Decorative', serif; font-size: 1.3rem; font-weight: 500; }
+  nav a.home-link {
+    text-decoration: none;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    border: 1px solid var(--glass-border);
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    background: var(--glass);
+  }
+
+  .stage {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 5rem;
+  }
+
+  .intro { text-align: center; margin-bottom: 2.5rem; }
+  .eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+  }
+
+  .progress-track {
+    height: 6px;
+    background: var(--glass);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    border: 1px solid var(--glass-border);
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--coral), var(--gold));
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .glass-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    padding: 2.25rem;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .q-count {
+    font-size: 0.85rem;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.6rem;
+  }
+  .q-text {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 1.35rem;
+    line-height: 1.4;
+    margin-bottom: 1.75rem;
+  }
+
+  .options { display: grid; gap: 0.85rem; }
+  .option-btn {
+    text-align: left;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--glass-border);
+    color: var(--text-light);
+    padding: 0.9rem 1.15rem;
+    border-radius: 14px;
+    font-size: 0.98rem;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+  }
+  .option-btn:hover:not(:disabled) {
+    background: rgba(255,255,255,0.13);
+    transform: translateY(-2px);
+  }
+  .option-btn.correct {
+    background: rgba(111,191,139,0.22);
+    border-color: var(--green);
+  }
+  .option-btn.incorrect {
+    background: rgba(224,98,90,0.22);
+    border-color: var(--red);
+  }
+  .option-btn:disabled { cursor: default; }
+
+  .feedback {
+    margin-top: 1.25rem;
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    min-height: 1.5em;
+  }
+
+  .next-btn {
+    margin-top: 1.5rem;
+    display: none;
+    background: linear-gradient(135deg, var(--coral), var(--amber));
+    color: #2a1408;
+    border: none;
+    padding: 0.85rem 1.6rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  .next-btn:hover { transform: translateY(-2px); }
+
+  .results { text-align: center; }
+  .score-badge {
+    font-family: 'Fraunces', serif;
+    font-size: 3.2rem;
+    font-weight: 500;
+    color: var(--gold);
+    margin: 1rem 0 0.5rem;
+  }
+  .score-line { color: var(--text-muted); margin-bottom: 2rem; }
+  .replay-btn {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    color: var(--text-light);
+    padding: 0.85rem 1.7rem;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.2s ease;
+  }
+  .replay-btn:hover { background: rgba(255,255,255,0.14); }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+
+<div class="sky"></div>
+
+<nav>
+  <span class="brand">Golden Hour</span>
+  <a class="home-link" href="index.html">← Back home</a>
+</nav>
+
+<div class="stage">
+  <div class="intro">
+    <div class="eyebrow">Ten questions, one sunset</div>
+    <h1>How well do you know Marina Bay?</h1>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+  <div class="glass-card" id="quizCard">
+    <div class="q-count" id="qCount">Question 1 of 10</div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="nextBtn">Next question →</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  {
+    q: "What Marina Bay hotel is famous for the infinity pool balanced across its three towers?",
+    options: ["Marina Bay Sands", "Fullerton Bay Hotel", "Raffles Hotel", "The Ritz-Carlton"],
+    correct: 0,
+    fact: "The rooftop SkyPark sits on top of three towers like a boat, holding the pool over 55 storeys up."
+  },
+  {
+    q: "The SkyPark that tops Marina Bay Sands is often described as shaped like a...",
+    options: ["Wave", "Boat", "Leaf", "Crescent moon"],
+    correct: 1,
+    fact: "Its long, curved platform is designed to evoke a ship resting across the three towers."
+  },
+  {
+    q: "Which giant observation wheel sits along Marina Bay?",
+    options: ["London Eye", "High Roller", "Singapore Flyer", "Star of Nanchang"],
+    correct: 2,
+    fact: "When it opened, the Singapore Flyer was the tallest observation wheel of its kind in the world."
+  },
+  {
+    q: "The futuristic tree-like structures at Gardens by the Bay are called...",
+    options: ["Supertrees", "Skytowers", "Lightpillars", "Canopy spires"],
+    correct: 0,
+    fact: "The Supertrees house vertical gardens and light up after dark, right as the sunset fades."
+  },
+  {
+    q: "The half-lion, half-fish creature that symbolizes Singapore near the bay is the...",
+    options: ["Kraken", "Merlion", "Naga", "Garuda"],
+    correct: 1,
+    fact: "The Merlion has spouted water near the bay since the 1970s as one of the city's best-known emblems."
+  },
+  {
+    q: "Why does the sky turn orange and red at sunset?",
+    options: [
+      "The sun changes color as it cools",
+      "Clouds reflect the ocean's color",
+      "Shorter blue wavelengths scatter away, leaving longer red and orange light",
+      "Pollution always causes the color"
+    ],
+    correct: 2,
+    fact: "At low angles, sunlight travels through more atmosphere, scattering blue light away and letting warmer, longer wavelengths reach your eyes — this is Rayleigh scattering."
+  },
+  {
+    q: "The lotus-flower-shaped museum sitting right at the water's edge near Marina Bay Sands is the...",
+    options: ["National Gallery", "ArtScience Museum", "Peranakan Museum", "Science Centre"],
+    correct: 1,
+    fact: "Its ten curved 'fingers' are meant to catch rainwater, echoing a blooming lotus."
+  },
+  {
+    q: "'Golden hour' in photography refers to the light shortly after sunrise and before...",
+    options: ["Noon", "Sunset", "Midnight", "Moonrise"],
+    correct: 1,
+    fact: "Low sun angles at both ends of the day produce the same soft, warm-toned light photographers chase."
+  },
+  {
+    q: "What structure separates Marina Bay's freshwater reservoir from the open sea?",
+    options: ["Marina Barrage", "Changi Dam", "Sentosa Wall", "Botanic Gate"],
+    correct: 0,
+    fact: "The Marina Barrage turned the bay into a freshwater reservoir and helps manage flooding across the city."
+  },
+  {
+    q: "What nightly light and water show takes place on Marina Bay?",
+    options: ["Aurora", "Spectra", "Luminous", "Nightglow"],
+    correct: 1,
+    fact: "Spectra combines light, water, and projection across the bay every evening after dark."
+  }
+];
+
+let current = 0;
+let score = 0;
+
+const qCountEl = document.getElementById('qCount');
+const qTextEl = document.getElementById('qText');
+const optionsEl = document.getElementById('options');
+const feedbackEl = document.getElementById('feedback');
+const nextBtn = document.getElementById('nextBtn');
+const progressFill = document.getElementById('progressFill');
+const quizCard = document.getElementById('quizCard');
+
+function renderQuestion(){
+  const item = questions[current];
+  qCountEl.textContent = `Question ${current+1} of ${questions.length}`;
+  qTextEl.textContent = item.q;
+  feedbackEl.textContent = '';
+  nextBtn.style.display = 'none';
+  progressFill.style.width = `${(current/questions.length)*100}%`;
+
+  optionsEl.innerHTML = '';
+  item.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => selectAnswer(i, btn));
+    optionsEl.appendChild(btn);
+  });
+}
+
+function selectAnswer(i, btn){
+  const item = questions[current];
+  const allBtns = optionsEl.querySelectorAll('.option-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  if(i === item.correct){
+    btn.classList.add('correct');
+    score++;
+    feedbackEl.textContent = `Correct — ${item.fact}`;
+  } else {
+    btn.classList.add('incorrect');
+    allBtns[item.correct].classList.add('correct');
+    feedbackEl.textContent = `Not quite — ${item.fact}`;
+  }
+  nextBtn.style.display = 'inline-block';
+}
+
+nextBtn.addEventListener('click', () => {
+  current++;
+  if(current < questions.length){
+    renderQuestion();
+  } else {
+    showResults();
+  }
+});
+
+function showResults(){
+  progressFill.style.width = '100%';
+  let line;
+  if(score === questions.length) line = "Golden hour perfection — you know the bay by heart.";
+  else if(score >= questions.length * 0.7) line = "Sharp eyes — you clearly watch the skyline closely.";
+  else if(score >= questions.length * 0.4) line = "A solid sunset stroll's worth of knowledge.";
+  else line = "Time to take a slower walk along the bay.";
+
+  quizCard.innerHTML = `
+    <div class="results">
+      <div class="q-count">Quiz complete</div>
+      <div class="score-badge">${score} / ${questions.length}</div>
+      <div class="score-line">${line}</div>
+      <button class="replay-btn" id="replayBtn">Play again</button>
+    </div>
+  `;
+  document.getElementById('replayBtn').addEventListener('click', () => {
+    current = 0;
+    score = 0;
+    location.reload();
+  });
+}
+
+renderQuestion();
+</script>
+
+</body>
+</html>

@@ -8,6 +8,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap');
+
+ .cinzel-decorative-unique {
+   font-family: "Cinzel Decorative", serif;
+    font-style: normal;
+ }
+
   :root{
     --navy: #1c1330;
     --plum: #2c1b3f;
@@ -20,18 +27,30 @@
     --text-muted: rgba(253,246,236,0.68);
   }  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html { scroll-behavior: smooth; }
+  html, body {  
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
 
-  body {
-    font-family: 'Inter', sans-serif;
-    color: var(--text-light);
+    background-image: url('./marina-bay.jpg');
+    background-position: fixed;
+    background-size: auto;
+  }
 
-    background: url("./marina-bay.jpg");
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
+  .scroll-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100vh;
 
+    overflow-y: scroll;
     overflow-x: hidden;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scroll-wrapper::-webkit-scrollbar {
+    display: none;
   }
 
   nav {
@@ -44,27 +63,101 @@
     padding: 1.25rem 2rem;
     background: rgba(28,19,48,0.35);
     backdrop-filter: blur(5.5px);
-    -webkit-backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(5.5px);
     border-bottom: 1px solid var(--glass-border);
   }
+
   .brand {
-    font-family: 'Fraunces', serif;
-    font-size: 1.3rem;
+    position:absolute;
+    top: 4%;
+    left: 45%;
+
+    font-family: 'Cinzel Decorative', serif;
+    color: white;
+    text-align: center;
+    font-size: 2vw;
     font-weight: 500;
     letter-spacing: 0.02em;
   }
-  nav a.play-link {
-    text-decoration: none;
-    color: var(--navy);
-    background: var(--gold);
-    padding: 0.55rem 1.3rem;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  nav a.play-link:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(240,168,74,0.35); }
 
+  /* Init window*/
+  .init-window {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: rgb(22, 21, 21);
+
+    z-index: 9998;
+  }
+
+  .init-window.removedCUH {
+    animation: getthatshiout 1.5s ease-in-out forwards;
+
+        z-index: -1;
+    opacity: 0;
+    transform: translate(-100% 100%);
+  }
+
+  .title-init {
+    position: absolute;
+    top: 40%;
+    left: 15%;
+
+    font-size: 7vw;
+    font-family: "Cinzel Decorative";
+    width: 80%;
+    height: 20%;
+
+    fill: transparent;
+
+    stroke-width: 1px;
+    stroke-dashoffset: 1000;
+    stroke-dasharray: 1000;
+    stroke: white;
+
+    animation: initts 6s ease-in-out forwards;
+  }
+
+  @keyframes initts {
+    0% {
+      stroke-dashoffset: 1000;
+      fill: transparent;
+      transform: scale(1);
+    }
+    20% {
+      fill: transparent;
+    }
+    40% {
+      fill: transparent;
+    }
+    50% {
+      stroke-dashoffset: 0;
+      fill: white;
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0;
+      fill: white;
+      transform: scale(100);
+      opacity: 0;
+    }
+  }
+
+  @keyframes getthatshiout {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /*  Hero title */
   .hero {
     min-height: 88vh;
     display: flex;
@@ -230,11 +323,19 @@
 <div class="sky"></div>
 <div class="sun"></div>
 
+<!---Navigation--->
 <nav>
-  <span class="brand">Marina Bay · Golden Hour</span>
-  <a class="play-link" href="trivia.html">Play the trivia →</a>
+  <span class="brand">Golden Hour</span>
 </nav>
 
+<!---Init window--->
+<div class="init-window">
+  <svg class="title-init">
+    <text x="10%" y="80%">GOLDEN HOUR</text>
+  </svg>
+</div>
+
+<!---Wrapper for lenis--->
 <div class="scroll-wrapper">
     <div class="scroll-content">
 
@@ -248,10 +349,12 @@
             </div>
         </section>
 
+        <!--- Features section -->
         <section class="features" id="features">
             <h2 class="section-heading">Landmarks worth the golden hour</h2>
             <p class="section-sub">Four fixtures of the bay that shape its skyline — and four of the ideas the trivia game will test you on.</p>
 
+            <!---Cards--->
             <div class="card-grid">
                 <div class="glass-card">
                     <span class="num">Skypark</span>
@@ -279,11 +382,19 @@
             </div>
         </section>
 
+        <!---Trivia--->  
         <div class="cta-band">
             <h2>Think you know the bay as well as you love the view?</h2>
             <a class="btn-primary" href="trivia.html">Start the trivia →</a>
         </div>
 
+        <!--- Geo Guessr--->
+        <div class="cta-band">
+          <h2>Think you can visually recognise the bay as much as you love?</h2>
+          <a class="btn-primary" href="PLACEHOLDER.html">Start the geo-guessr</a>
+        </div>
+
+        <!---Footer--->
         <footer>
             <span>Marina Bay · Golden Hour — a fan tribute page</span>
             <span>Built for sunset watchers</span>
@@ -292,36 +403,29 @@
 
 </body>
 
-<script>
+<script type="module">
 import Lenis from 'https://unpkg.com/lenis@1.3.25/dist/lenis.mjs';
 
+const intWindow = document.querySelector('.init-window');
 
-    let lenis;
-    let rafId;
+// Scrolling
+let lenis;
+let rafId;
 
 function initLenis() {
-    // Destroy old
-    if (lenis) {
-        lenis.destroy();
-        lenis = null;
-    }
-    if (rafId) {
-        cancelAnimationFrame(rafId);
-        rafId = null;
-    }
+    if (lenis) { lenis.destroy(); lenis = null; }
+    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
 
-    // horizontal scroll
     document.body.style.overflowY = '';
     document.body.style.overflowX = '';
 
-    const wrapper = document.querySelector('.scroll-wrapper');
-    const content = document.querySelector('.scroll-content');
-    
+    const wrapperEl = document.querySelector('.scroll-wrapper'); // outer, scrollable
+    const contentEl = document.querySelector('.scroll-content'); // inner, gets translated
+
     lenis = new Lenis({
-        wrapper: wrapper,
-        content: content,
-        eventsTarget: wrapper,
-        orientation: 'vertical',   
+        wrapper: wrapperEl,
+        content: contentEl,
+        orientation: 'vertical',
         gestureOrientation: 'both',
         smoothWheel: true,
         wheelMultiplier: 3,
@@ -330,15 +434,18 @@ function initLenis() {
         infinite: false,
     });
 
-    // RAF loop
     function raf(time) {
         lenis.raf(time);
         rafId = requestAnimationFrame(raf);
     }
-
     rafId = requestAnimationFrame(raf);
 }
 
-initLenis();
+setTimeout(() => {
+  intWindow.classList.add('removedCUH');
+  initLenis();  
+
+}, 5000);
+
 </script>
 </html>
