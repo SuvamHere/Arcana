@@ -31,28 +31,14 @@
   body {
     font-family: 'Inter', sans-serif;
     color: var(--text-light);
+
+    background-image: url("../marina-bay.jpg");
+    background-size: cover;
+    background-position: fixed;
+
     background: var(--navy);
     min-height: 100vh;
   }
-  .sky {
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    background: linear-gradient(180deg,
-      #241733 0%,
-      #5a2c4a 30%,
-      #b84a3e 55%,
-      #e88a3e 75%,
-      #fbd08a 100%);
-    background-size: 100% 220%;
-    animation: driftSky 26s ease-in-out infinite alternate;
-  }
-  @keyframes driftSky {
-    0% { background-position: 0 0%; }
-    100% { background-position: 0 100%; }
-  }
-  @media (prefers-reduced-motion: reduce) { .sky { animation: none; } }
-
   nav {
     position: sticky;
     top: 0;
@@ -216,11 +202,9 @@
 </head>
 <body>
 
-<div class="sky"></div>
-
 <nav>
   <span class="brand">Golden Hour</span>
-  <a class="home-link" href="index.html">← Back home</a>
+  <a class="home-link" href="../index.html">← Back home</a>
 </nav>
 
 <div class="stage">
@@ -239,7 +223,7 @@
     <button class="next-btn" id="nextBtn">Next question →</button>
   </div>
 </div>
-
+</body>
 <script>
 const questions = [
   {
