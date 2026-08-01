@@ -8,13 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap');
-
- .cinzel-decorative-unique {
-   font-family: "Cinzel Decorative", serif;
-    font-style: normal;
- }
-
   :root{
     --navy: #1c1330;
     --coral: #d85a30;
@@ -31,12 +24,9 @@
   body {
     font-family: 'Inter', sans-serif;
     color: var(--text-light);
-
-    background-image: url("../marina-bay.jpg");
+    background-image: url(../marina-bay.jpg);
     background-size: cover;
     background-position: fixed;
-
-    background: var(--navy);
     min-height: 100vh;
   }
   nav {
@@ -52,7 +42,7 @@
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--glass-border);
   }
-  .brand { font-family: 'Cinzel Decorative', serif; font-size: 1.3rem; font-weight: 500; }
+  .brand { font-family: 'Fraunces', serif; font-size: 1.3rem; font-weight: 500; }
   nav a.home-link {
     text-decoration: none;
     color: var(--text-light);
@@ -202,14 +192,16 @@
 </head>
 <body>
 
+<div class="sky"></div>
+
 <nav>
-  <span class="brand">Golden Hour</span>
-  <a class="home-link" href="../index.html">← Back home</a>
+  <span class="brand">Marina Bay · Golden Hour</span>
+  <a class="home-link" href="index.html">← Back home</a>
 </nav>
 
 <div class="stage">
   <div class="intro">
-    <div class="eyebrow">Ten questions, one sunset</div>
+    <div class="eyebrow">60 questions, one sunset</div>
     <h1>How well do you know Marina Bay?</h1>
   </div>
 
@@ -223,7 +215,7 @@
     <button class="next-btn" id="nextBtn">Next question →</button>
   </div>
 </div>
-</body>
+
 <script>
 const questions = [
   {
@@ -290,6 +282,311 @@ const questions = [
     options: ["Aurora", "Spectra", "Luminous", "Nightglow"],
     correct: 1,
     fact: "Spectra combines light, water, and projection across the bay every evening after dark."
+  },
+  {
+    q: "The Merlion — half lion, half fish — is a symbol of which country?",
+    options: ["Singapore", "Malaysia", "Thailand", "Indonesia"],
+    correct: 0,
+    fact: "The Merlion has represented Singapore since the 1960s, blending its old name 'Lion City' with its fishing-village roots."
+  },
+  {
+    q: "What material do Marina Bay's skyscrapers rely on heavily to reflect the sunset's colors?",
+    options: ["Brick", "Glass", "Timber", "Marble"],
+    correct: 1,
+    fact: "Glass curtain walls are what let the towers pick up and mirror the sky's changing colors at dusk."
+  },
+  {
+    q: "Gardens by the Bay sits right next to which body of water?",
+    options: ["Marina Bay", "Sungei Buloh", "Kallang Basin", "Johor Strait"],
+    correct: 0,
+    fact: "The park was built on reclaimed land bordering Marina Bay, part of the same waterfront redevelopment."
+  },
+  {
+    q: "The ArtScience Museum's shape is often compared to which flower?",
+    options: ["Rose", "Lotus", "Orchid", "Sunflower"],
+    correct: 1,
+    fact: "Its ten curved 'fingers' are designed to catch rainwater, echoing a blooming lotus."
+  },
+  {
+    q: "Which domed conservatory at Gardens by the Bay recreates a cool, misty mountain climate?",
+    options: ["Flower Dome", "Cloud Forest", "Sun Pavilion", "Glass Atrium"],
+    correct: 1,
+    fact: "Cloud Forest features an indoor waterfall and a walkway through simulated highland mist."
+  },
+  {
+    q: "Which domed conservatory at Gardens by the Bay recreates a dry, Mediterranean-style climate?",
+    options: ["Cloud Forest", "Flower Dome", "Desert House", "Sunroom"],
+    correct: 1,
+    fact: "The Flower Dome keeps a cool, dry climate suited to plants from regions like the Mediterranean and South Africa."
+  },
+  {
+    q: "What is the elevated walkway connecting several of the Supertrees called?",
+    options: ["OCBC Skyway", "Cloud Bridge", "Skypark Link", "Bay Walk"],
+    correct: 0,
+    fact: "The OCBC Skyway lets visitors walk between the tops of the tallest Supertrees for a view over the gardens."
+  },
+  {
+    q: "Before Marina Bay's modern land reclamation, what waterway was historically Singapore's main trading artery?",
+    options: ["Singapore River", "Kallang River", "Rochor Canal", "Geylang River"],
+    correct: 0,
+    fact: "The Singapore River fed into the older harbor that Marina Bay's reclaimed land later extended outward from."
+  },
+  {
+    q: "What structure turned Marina Bay from open sea into a freshwater reservoir?",
+    options: ["Marina Barrage", "Changi Dam", "Bay Weir", "Straits Gate"],
+    correct: 0,
+    fact: "The Marina Barrage separates the bay from the sea, helping with water supply and flood control for the city."
+  },
+  {
+    q: "Which nearby island resort, known for beaches and a cable car, sits just south of the mainland?",
+    options: ["Sentosa", "Pulau Ubin", "St John's Island", "Lazarus Island"],
+    correct: 0,
+    fact: "Sentosa is connected to Singapore's mainland by a causeway, cable car, and monorail."
+  },
+  {
+    q: "What annual motorsport event runs at night along the streets circling Marina Bay?",
+    options: ["Singapore Grand Prix", "Bay Rally", "Marina Cup", "Skyline 500"],
+    correct: 0,
+    fact: "It was the first Formula 1 race held at night, lit by an enormous temporary lighting rig around the circuit."
+  },
+  {
+    q: "Marina Bay Sands' hotel and casino resort first opened in which decade?",
+    options: ["1990s", "2000s", "2010s", "2020s"],
+    correct: 2,
+    fact: "The resort opened in 2010, quickly becoming one of the most recognizable additions to the skyline."
+  },
+  {
+    q: "What is the name of Singapore's financial district, visible across the water from Marina Bay Sands?",
+    options: ["Central Business District", "Riverside Quarter", "Old Town", "Harbor District"],
+    correct: 0,
+    fact: "Singapore's CBD, including Raffles Place, sits directly across the bay from the Marina Bay Sands towers."
+  },
+  {
+    q: "The three towers of Marina Bay Sands are topped by a platform often compared to the shape of a...",
+    options: ["Boat", "Wing", "Leaf", "Crown"],
+    correct: 0,
+    fact: "The SkyPark's long curved form is designed to resemble a ship resting across the towers."
+  },
+  {
+    q: "What causes the sky to appear blue during the middle of the day?",
+    options: ["Rayleigh scattering", "Reflection off the ocean", "Ozone absorption", "Cloud diffusion"],
+    correct: 0,
+    fact: "Shorter blue wavelengths scatter more easily off air molecules, filling the daytime sky with blue light."
+  },
+  {
+    q: "Why does the sun often look orange or red at sunset instead of white?",
+    options: [
+      "It cools down as it sets",
+      "Its light travels through more atmosphere, scattering away blue light",
+      "The ocean reflects red light onto it",
+      "Clouds always turn it red"
+    ],
+    correct: 1,
+    fact: "At low angles near the horizon, sunlight passes through far more air, scattering out blue and leaving warm tones."
+  },
+  {
+    q: "What is the popular name for the brief, rare optical effect sometimes seen right as the sun fully sets?",
+    options: ["Green flash", "Blue ring", "White spark", "Violet burst"],
+    correct: 0,
+    fact: "Under the right atmospheric conditions, a tiny green flash can appear for a second at the top edge of the setting sun."
+  },
+  {
+    q: "What term describes the soft, warm-toned light shortly after sunrise and before sunset?",
+    options: ["Golden hour", "Blue hour", "High noon", "Twilight zone"],
+    correct: 0,
+    fact: "Golden hour light is prized by photographers for its warm color and long, soft shadows."
+  },
+  {
+    q: "What term describes the cool, soft light in the sky just before sunrise or just after sunset?",
+    options: ["Golden hour", "Blue hour", "Dawn glow", "Nightfall"],
+    correct: 1,
+    fact: "Blue hour happens when the sun is just below the horizon, tinting the sky in soft blues and purples."
+  },
+  {
+    q: "What do we call the period of light just before the sun rises?",
+    options: ["Dusk", "Dawn", "Noon", "Midnight sun"],
+    correct: 1,
+    fact: "Dawn is the counterpart to dusk — the soft transition from night into day."
+  },
+  {
+    q: "What do we call the period of fading light just after the sun sets?",
+    options: ["Dawn", "Dusk", "Zenith", "Solstice"],
+    correct: 1,
+    fact: "Dusk covers the stretch of twilight between sunset and full darkness."
+  },
+  {
+    q: "What atmospheric layer, closest to Earth's surface, is where sunsets and most weather occur?",
+    options: ["Stratosphere", "Troposphere", "Mesosphere", "Thermosphere"],
+    correct: 1,
+    fact: "The troposphere is the lowest layer of the atmosphere, holding the air and clouds that color a sunset."
+  },
+  {
+    q: "Colorful sunsets often become even more vivid worldwide after major eruptions of what kind?",
+    options: ["Underwater earthquakes", "Volcanic eruptions", "Meteor showers", "Solar flares"],
+    correct: 1,
+    fact: "Fine volcanic ash and aerosols lingering in the atmosphere scatter extra light, intensifying sunset colors."
+  },
+  {
+    q: "On the equinox, roughly which direction does the sun set in the Northern Hemisphere?",
+    options: ["Due north", "Due south", "Due east", "Due west"],
+    correct: 3,
+    fact: "On the spring and autumn equinoxes, the sun rises close to due east and sets close to due west almost everywhere."
+  },
+  {
+    q: "What are the sunbeams called that appear to radiate through gaps in clouds, often visible at sunset?",
+    options: ["Crepuscular rays", "Solar flares", "Halo rings", "Aurora bands"],
+    correct: 0,
+    fact: "Crepuscular rays form when sunlight is scattered by dust or haze as it streams through cloud gaps."
+  },
+  {
+    q: "True or false: near the equator, day length changes very little throughout the year.",
+    options: ["True", "False"],
+    correct: 0,
+    fact: "Places close to the equator, like Singapore, see the sun rise and set at roughly the same times year-round."
+  },
+  {
+    q: "What is the name for the phenomenon where the sun never fully sets during summer near the poles?",
+    options: ["Midnight sun", "Polar glow", "Endless dusk", "Solar drift"],
+    correct: 0,
+    fact: "In high-latitude summer, the sun can stay above the horizon for weeks at a time — the 'midnight sun'."
+  },
+  {
+    q: "In photography, the 'rule of thirds' divides the frame into a grid of how many equal sections?",
+    options: ["Four", "Six", "Nine", "Twelve"],
+    correct: 2,
+    fact: "A 3-by-3 grid creates nine sections, with the intersecting lines marking good spots for key subjects."
+  },
+  {
+    q: "What compositional technique uses natural shapes, like a bridge or archway, to frame the main subject?",
+    options: ["Framing", "Panning", "Bracketing", "Vignetting"],
+    correct: 0,
+    fact: "Framing uses elements in the scene to create a natural border around the subject, drawing the eye inward."
+  },
+  {
+    q: "What term describes lines in a photo, like a boardwalk or shoreline, that draw the eye toward the subject?",
+    options: ["Leading lines", "Dead space", "Cross-processing", "Chromatic lines"],
+    correct: 0,
+    fact: "Leading lines guide the viewer's eye through the image, often straight toward the horizon or focal point."
+  },
+  {
+    q: "What spiral, inspired by a mathematical sequence, is often used as a guide for pleasing composition?",
+    options: ["Fibonacci spiral", "Helix curve", "Vortex ring", "Orbit path"],
+    correct: 0,
+    fact: "The Fibonacci (or golden) spiral is used by artists and photographers to arrange elements in a naturally balanced way."
+  },
+  {
+    q: "Which camera setting controls how much light enters through the lens opening?",
+    options: ["Aperture", "White balance", "Frame rate", "Resolution"],
+    correct: 0,
+    fact: "Aperture, measured in f-stops, controls the size of the lens opening and affects both light and depth of field."
+  },
+  {
+    q: "To capture a clean silhouette of a skyline at sunset, photographers usually expose for what part of the scene?",
+    options: ["The dark foreground", "The bright sky", "The camera's flash", "The shadows only"],
+    correct: 1,
+    fact: "Exposing for the bright sky underexposes the foreground, turning buildings and people into clean silhouettes."
+  },
+  {
+    q: "What term describes the soft, pleasing blur in the out-of-focus background of a photo?",
+    options: ["Bokeh", "Grain", "Vignette", "Flare"],
+    correct: 0,
+    fact: "Bokeh describes the aesthetic quality of blurred, out-of-focus points of light in a photograph's background."
+  },
+  {
+    q: "Long-exposure shots of moving water at sunset often produce what visual effect?",
+    options: ["Frozen droplets", "Smooth, silky water", "Rainbow streaks", "Double exposure"],
+    correct: 1,
+    fact: "A slow shutter speed blurs the water's motion over time, giving it a smooth, misty appearance."
+  },
+  {
+    q: "What is it called when a photographer shoots directly toward the sun, often creating a starburst or flare?",
+    options: ["Backlighting", "Underexposure", "Cross-lighting", "Side-fill"],
+    correct: 0,
+    fact: "Backlighting places the light source behind or facing the subject, which can create dramatic flares and silhouettes."
+  },
+  {
+    q: "What is the name for a wide, sweeping photograph capturing a broad view of a skyline or landscape?",
+    options: ["Panorama", "Macro shot", "Time-lapse", "Tilt-shift"],
+    correct: 0,
+    fact: "Panoramic shots stitch or capture a much wider field of view than a standard frame, ideal for skylines."
+  },
+  {
+    q: "In color theory, colors sitting opposite each other on the color wheel — like orange and blue — are called...",
+    options: ["Complementary colors", "Monochrome colors", "Neutral colors", "Tertiary colors"],
+    correct: 0,
+    fact: "Complementary pairs like orange and blue create strong contrast, which is part of why sunset skies feel so vivid."
+  },
+  {
+    q: "What term describes a smooth blending of colors, like a sky fading from orange into purple?",
+    options: ["Gradient", "Filter", "Overlay", "Saturation"],
+    correct: 0,
+    fact: "A gradient is a gradual transition between colors, exactly what a sunset sky naturally produces."
+  },
+  {
+    q: "In design, the even (or intentionally uneven) distribution of visual weight across a scene is called...",
+    options: ["Balance", "Texture", "Contrast", "Alignment"],
+    correct: 0,
+    fact: "Balance helps a composition feel stable, whether it's built symmetrically or with an intentional asymmetry."
+  },
+  {
+    q: "What design principle refers to repeating shapes, like rows of skyscraper windows, to create rhythm?",
+    options: ["Pattern", "Isolation", "Distortion", "Fragmentation"],
+    correct: 0,
+    fact: "Repeating elements create visual rhythm, turning a skyline's windows or towers into a pattern the eye can follow."
+  },
+  {
+    q: "What is the empty or open area around a photo's main subject called?",
+    options: ["Negative space", "Dead zone", "Blank frame", "Off-canvas"],
+    correct: 0,
+    fact: "Negative space gives the eye room to rest and often makes the main subject stand out more clearly."
+  },
+  {
+    q: "What field of study examines how colors interact and affect perception?",
+    options: ["Color theory", "Optics engineering", "Pigment science", "Spectral physics"],
+    correct: 0,
+    fact: "Color theory covers how hues relate, contrast, and combine — the toolkit behind why sunset palettes feel so harmonious."
+  },
+  {
+    q: "Warm colors like red, orange, and yellow are most often associated with which kind of mood?",
+    options: ["Energy and comfort", "Calm and distance", "Sadness and isolation", "Neutrality"],
+    correct: 0,
+    fact: "Warm hues tend to feel energetic and inviting, part of why sunset scenes often feel emotionally warm too."
+  },
+  {
+    q: "Cool colors like blue and purple are most often associated with which kind of mood?",
+    options: ["Excitement", "Calm and serenity", "Urgency", "Aggression"],
+    correct: 1,
+    fact: "Cool tones tend to read as calm or distant, which is part of why the fading blue hour feels so peaceful."
+  },
+  {
+    q: "What natural feature does Marina Bay's promenade run alongside, offering unobstructed sunset views?",
+    options: ["The waterfront/bay", "A forest reserve", "A mountain ridge", "A desert plain"],
+    correct: 0,
+    fact: "The open waterfront promenade is exactly what gives Marina Bay its uninterrupted view of the setting sun."
+  },
+  {
+    q: "What do we call a photo taken over an extended period that compresses hours of a sunset into seconds?",
+    options: ["Time-lapse", "Slow-motion", "Freeze-frame", "Multi-exposure"],
+    correct: 0,
+    fact: "Time-lapse photography captures frames at intervals, then plays them back quickly to show the sky's colors shifting fast."
+  },
+  {
+    q: "What is the term for haze or particles in the air that can make sunsets look hazier but also more colorful?",
+    options: ["Aerosols", "Isotopes", "Photons", "Ions"],
+    correct: 0,
+    fact: "Tiny airborne particles, or aerosols, scatter extra light and can deepen the reds and oranges of a sunset."
+  },
+  {
+    q: "In a symmetrical reflection shot of a skyline on calm water, what is the water essentially acting as?",
+    options: ["A mirror", "A lens", "A prism", "A filter"],
+    correct: 0,
+    fact: "Still water reflects the skyline almost like a mirror, doubling the scene and its colors."
+  },
+  {
+    q: "What is the general term for the moment each day when the sun crosses the horizon and disappears from view?",
+    options: ["Sunset", "Zenith", "Apex", "Culmination"],
+    correct: 0,
+    fact: "Sunset marks the point when the sun's disk fully drops below the horizon line."
   }
 ];
 
