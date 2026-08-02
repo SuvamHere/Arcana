@@ -12,7 +12,6 @@
 <body>
 
 
-<!-- Ambient sunset backdrop, shifts hue as rounds progress -->
 <div class="sky" id="sky">
   <div class="sky-glow"></div>
   <svg class="skyline" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
@@ -36,11 +35,10 @@
   </svg>
 </div>
 
-<!-- ============ START SCREEN ============ -->
 <section class="screen active" id="screen-start">
   <div class="glass-card start-card">
     <p class="eyebrow">A photo-guessing game set on the water</p>
-    <h1 class="logo">Bay<span>Guessr</span></h1>
+    <h1 class="logo">MarinaBay<span>Guesser</span></h1>
     <p class="tagline">We picked six spots around the bay. You place the pin. No second guesses.</p>
 
     <div class="start-actions">
@@ -56,7 +54,6 @@
   </div>
 </section>
 
-<!-- ============ INSTRUCTIONS MODAL ============ -->
 <div class="modal-backdrop" id="modal-backdrop">
   <div class="glass-card modal-card">
     <h2>How this works</h2>
@@ -70,7 +67,6 @@
   </div>
 </div>
 
-<!-- ============ GAME SCREEN ============ -->
 <section class="screen" id="screen-game">
   <header class="game-topbar glass-card">
     <div class="round-indicator">
@@ -86,7 +82,7 @@
 
   <div class="game-body">
     <div class="glass-card photo-panel">
-      <div class="photo-frame" id="photo-frame"><!-- scene svg injected --></div>
+      <div class="photo-frame" id="photo-frame"></div>
       <p class="photo-caption">Name the spot.</p>
     </div>
 
@@ -94,7 +90,7 @@
       <div class="map-wrap">
         <svg id="map-svg" viewBox="0 0 800 500" class="bay-map">
           
-          <!-- This loads your local map image perfectly into the SVG -->
+         
           <image href="map.jpg" x="0" y="0" width="800" height="500" preserveAspectRatio="none" />
           
           <g id="pins-layer"></g>
