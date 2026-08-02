@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,7 +11,6 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
 
 <div class="sky" id="sky">
   <div class="sky-glow"></div>
@@ -38,7 +38,7 @@
 <section class="screen active" id="screen-start">
   <div class="glass-card start-card">
     <p class="eyebrow">A photo-guessing game set on the water</p>
-    <h1 class="logo">MarinaBay<span>Guesser</span></h1>
+    <h1 class="logo">Marina<span>Guesser</span></h1>
     <p class="tagline">We picked six spots around the bay. You place the pin. No second guesses.</p>
 
     <div class="start-actions">
@@ -83,7 +83,7 @@
   <div class="game-body">
     <div class="glass-card photo-panel">
       <div class="photo-frame" id="photo-frame"></div>
-      <p class="photo-caption">Name the spot.</p>
+      <p class="photo-caption">Name the spot(IF YOU KNOWWWW)</p>
     </div>
 
     <div class="glass-card map-panel">
@@ -102,13 +102,11 @@
   </div>
 </section>
 
-<!-- ============ REVEAL SCREEN ============ -->
 <section class="screen" id="screen-reveal">
   <div class="reveal-body">
     <div class="glass-card reveal-map-panel">
       <svg id="reveal-svg" viewBox="0 0 800 500" class="bay-map">
         
-        <!-- Same real local map image for the reveal screen -->
         <image href="map.jpg" x="0" y="0" width="800" height="500" preserveAspectRatio="none" />
         
         <g id="reveal-layer"></g>
@@ -136,7 +134,6 @@
   </div>
 </section>
 
-<!-- ============ END SCREEN ============ -->
 <section class="screen" id="screen-end">
   <div class="glass-card end-card">
     <p class="eyebrow">That's the bay</p>
