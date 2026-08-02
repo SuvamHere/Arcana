@@ -1,6 +1,4 @@
-/* BayGuessr — vanilla JS, no frameworks */
-
-// x/y = pin coords on the 800x500 map
+// Lets add these first
 const ROUNDS = [
 
 {
@@ -55,10 +53,9 @@ const ROUNDS = [
 
 const MAX_SCORE_PER_ROUND = 5000;
 const MAP_WIDTH = 800, MAP_HEIGHT = 500;
-// Flavor-only conversion so distance reads as real-world meters.
+
 const METERS_PER_UNIT = 3.2;
 
-/* ---------------- State ---------------- */
 let state = {
   order: [],
   roundIndex: 0,
@@ -68,7 +65,6 @@ let state = {
   currentGuess: null
 };
 
-/* ---------------- DOM refs ---------------- */
 const screens = {
   start: document.getElementById("screen-start"),
   game: document.getElementById("screen-game"),
@@ -83,7 +79,6 @@ function showScreen(name){
   screens[name].classList.add("active");
 }
 
-/* ---------------- Start / instructions ---------------- */
 document.getElementById("btn-play").addEventListener("click", startGame);
 document.getElementById("btn-howto").addEventListener("click", () => modalBackdrop.classList.add("active"));
 document.getElementById("btn-close-howto").addEventListener("click", () => modalBackdrop.classList.remove("active"));
@@ -99,7 +94,7 @@ function startGame(){
     currentGuess: null
   };
   document.getElementById("round-total").textContent = ROUNDS.length;
-  sky.className = ""; // reset time-of-day
+  sky.className = ""; 
   showScreen("game");
   loadRound();
 }
@@ -112,7 +107,6 @@ function shuffle(arr){
   return arr;
 }
 
-/* ---------------- Round loading ---------------- */
 function currentRound(){
   return ROUNDS[state.order[state.roundIndex]];
 }
@@ -128,7 +122,6 @@ function loadRound(){
 
   renderPhotoFrame(round);
 
-  // Shift ambient sky a little later into "evening" as rounds progress
   if(state.roundIndex >= Math.ceil(ROUNDS.length * 0.66)) sky.className = "night";
   else if(state.roundIndex >= Math.ceil(ROUNDS.length * 0.33)) sky.className = "dusk";
 
@@ -152,7 +145,6 @@ function renderPhotoFrame(round){
   img.src = round.image;
 }
 
-/* ---------------- Map click / guessing ---------------- */
 const mapSvg = document.getElementById("map-svg");
 mapSvg.addEventListener("click", (e) => {
   const pt = svgPoint(mapSvg, e.clientX, e.clientY);
@@ -176,8 +168,6 @@ function clearPins(groupId){
 function drawPin(groupId, x, y, color){
   const g = document.getElementById(groupId);
   const ns = "http://www.w3.org/2000/svg";
-  // outer group = position, inner group = the animated pin
-  // (keep transform off the same el or CSS wipes the position)
   const outer = document.createElementNS(ns, "g");
   outer.setAttribute("transform", `translate(${x},${y})`);
 
@@ -192,7 +182,6 @@ function drawPin(groupId, x, y, color){
   g.appendChild(outer);
 }
 
-/* ---------------- Guess submission ---------------- */
 document.getElementById("btn-guess").addEventListener("click", lockInGuess);
 
 function lockInGuess(){
@@ -212,13 +201,12 @@ function lockInGuess(){
 }
 
 function scoreFromDistance(distanceMeters){
-  if(distanceMeters <= 60) return MAX_SCORE_PER_ROUND; // "perfect pin" tolerance
-  const decay = 550; // controls how quickly points fall off with distance
+  if(distanceMeters <= 60) return MAX_SCORE_PER_ROUND;
+  const decay = 550; 
   const score = MAX_SCORE_PER_ROUND * Math.exp(-distanceMeters / decay);
   return Math.max(0, Math.round(score / 10) * 10);
 }
 
-/* ---------------- Reveal screen ---------------- */
 const revealLayer = "reveal-layer";
 
 function showReveal(round, guess, distanceMeters, points){
@@ -272,7 +260,6 @@ document.getElementById("btn-next").addEventListener("click", () => {
   }
 });
 
-/* ---------------- End screen ---------------- */
 function showEndScreen(){
   showScreen("end");
   sky.className = "night";
