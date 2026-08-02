@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BayGuessr — Guess the Bay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+<!-- Ambient sunset backdrop, shifts hue as rounds progress -->
+<div class="sky" id="sky">
+  <div class="sky-glow"></div>
+  <svg class="skyline" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
+    <rect x="0" y="140" width="60" height="80" fill="currentColor"/>
+    <rect x="70" y="110" width="40" height="110" fill="currentColor"/>
+    <rect x="120" y="160" width="50" height="60" fill="currentColor"/>
+    <rect x="640" y="90" width="26" height="130" fill="currentColor"/>
+    <rect x="678" y="70" width="26" height="150" fill="currentColor"/>
+    <rect x="716" y="90" width="26" height="130" fill="currentColor"/>
+    <path d="M628 90 Q690 40 754 90 L754 100 Q690 60 628 100 Z" fill="currentColor"/>
+    <path d="M300 220 L300 130 Q300 110 320 110 Q340 110 340 130 L340 145 Q340 160 355 160 L365 160" fill="none" stroke="currentColor" stroke-width="4"/>
+    <circle cx="320" cy="105" r="22" fill="currentColor" opacity="0.85"/>
+    <path d="M380 220 L380 150 Q380 132 398 132" fill="none" stroke="currentColor" stroke-width="4"/>
+    <circle cx="398" cy="128" r="16" fill="currentColor" opacity="0.85"/>
+    <rect x="900" y="120" width="30" height="100" fill="currentColor"/>
+    <rect x="940" y="150" width="35" height="70" fill="currentColor"/>
+    <rect x="985" y="100" width="28" height="120" fill="currentColor"/>
+    <rect x="1200" y="130" width="45" height="90" fill="currentColor"/>
+    <rect x="1260" y="160" width="30" height="60" fill="currentColor"/>
+    <rect x="1330" y="110" width="40" height="110" fill="currentColor"/>
+  </svg>
+</div>
+
+<!-- ============ START SCREEN ============ -->
+<section class="screen active" id="screen-start">
+  <div class="glass-card start-card">
+    <p class="eyebrow">A photo-guessing game set on the water</p>
+    <h1 class="logo">Bay<span>Guessr</span></h1>
+    <p class="tagline">We picked six spots around the bay. You place the pin. No second guesses.</p>
+
+    <div class="start-actions">
+      <button class="btn btn-primary" id="btn-play">Start the round</button>
+      <button class="btn btn-ghost" id="btn-howto">Rules</button>
+    </div>
+
+    <div class="start-meta">
+      <div class="meta-item"><span class="meta-num">6</span><span class="meta-label">Rounds</span></div>
+      <div class="meta-item"><span class="meta-num">5,000</span><span class="meta-label">Max pts / round</span></div>
+      <div class="meta-item"><span class="meta-num">∞</span><span class="meta-label">Replays</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSTRUCTIONS MODAL ============ -->
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="glass-card modal-card">
+    <h2>How this works</h2>
+    <ol class="howto-list">
+      <li><span class="step-num">01</span><div><strong>Look closely.</strong> One frame, one spot, somewhere around the bay.</div></li>
+      <li><span class="step-num">02</span><div><strong>Commit to a pin.</strong> Click the map — you only get one drop.</div></li>
+      <li><span class="step-num">03</span><div><strong>Face the gap.</strong> A line shows exactly how far off you were.</div></li>
+      <li><span class="step-num">04</span><div><strong>Walk away smarter.</strong> Every reveal drops a real fact about the spot.</div></li>
+    </ol>
+    <button class="btn btn-primary" id="btn-close-howto">Got it</button>
+  </div>
+</div>
+
+<!-- ============ GAME SCREEN ============ -->
+<section class="screen" id="screen-game">
+  <header class="game-topbar glass-card">
+    <div class="round-indicator">
+      <span class="round-label">Round</span>
+      <span class="round-count"><span id="round-current">1</span> / <span id="round-total">6</span></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="score-live">
+      <span class="round-label">Score</span>
+      <span class="score-count" id="score-live">0</span>
+    </div>
+  </header>
+
+  <div class="game-body">
+    <div class="glass-card photo-panel">
+      <div class="photo-frame" id="photo-frame"><!-- scene svg injected --></div>
+      <p class="photo-caption">Name the spot.</p>
+    </div>
+
+    <div class="glass-card map-panel">
+      <div class="map-wrap">
+        <svg id="map-svg" viewBox="0 0 800 500" class="bay-map">
+          
+          <!-- This loads your local map image perfectly into the SVG -->
+          <image href="map.jpg" x="0" y="0" width="800" height="500" preserveAspectRatio="none" />
+          
+          <g id="pins-layer"></g>
+        </svg>
+        <p class="map-hint">One click. Choose carefully.</p>
+      </div>
+      <button class="btn btn-primary btn-guess" id="btn-guess" disabled>Lock it in</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVEAL SCREEN ============ -->
+<section class="screen" id="screen-reveal">
+  <div class="reveal-body">
+    <div class="glass-card reveal-map-panel">
+      <svg id="reveal-svg" viewBox="0 0 800 500" class="bay-map">
+        
+        <!-- Same real local map image for the reveal screen -->
+        <image href="map.jpg" x="0" y="0" width="800" height="500" preserveAspectRatio="none" />
+        
+        <g id="reveal-layer"></g>
+      </svg>
+    </div>
+
+    <div class="glass-card reveal-info-panel">
+      <p class="eyebrow" id="reveal-title-eyebrow">Location revealed</p>
+      <h2 id="reveal-title">—</h2>
+      <p class="reveal-fact" id="reveal-fact">—</p>
+
+      <div class="reveal-stats">
+        <div class="stat-block">
+          <span class="stat-label">Distance</span>
+          <span class="stat-value" id="reveal-distance">0 m</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-label">Points earned</span>
+          <span class="stat-value points" id="reveal-points">0</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="btn-next">Next round</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ END SCREEN ============ -->
+<section class="screen" id="screen-end">
+  <div class="glass-card end-card">
+    <p class="eyebrow">That's the bay</p>
+    <h2 class="end-score-label">Your total</h2>
+    <div class="end-score" id="end-score">0</div>
+    <p class="end-score-max">out of <span id="end-score-max">30,000</span></p>
+
+    <div class="end-stats">
+      <div class="stat-block">
+        <span class="stat-label">Best round</span>
+        <span class="stat-value" id="stat-best">—</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-label">Avg. distance</span>
+        <span class="stat-value" id="stat-avg-dist">—</span>
+      </div>
+      <div class="stat-block">
+        <span class="stat-label">Perfect pins</span>
+        <span class="stat-value" id="stat-perfect">—</span>
+      </div>
+    </div>
+
+    <div class="leaderboard">
+      <h3>Leaderboard</h3>
+      <ol id="leaderboard-list"></ol>
+    </div>
+
+    <button class="btn btn-primary" id="btn-replay">Play again</button>
+  </div>
+</section>
+
+<script src="script1.js"></script>
+</body>
+</html>
