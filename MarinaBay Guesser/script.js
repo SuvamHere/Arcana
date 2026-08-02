@@ -1,75 +1,56 @@
-/* =========================================================
-   BayGuessr — game logic
-   Pure vanilla JS. No frameworks, no backend.
-   Each round is illustrated (SVG) rather than a photo, so the
-   game runs standalone with zero external image assets — drop
-   real photos in later by swapping renderScene() for an <img>.
-========================================================= */
+/* BayGuessr — vanilla JS, no frameworks */
 
-/* ---------------- Round data ----------------
-   x / y are coordinates on the 800x500 illustrated map (map-svg viewBox).
-   Swap `image` for a real file path any time; renderScene falls back
-   to the illustration when no image is provided. */
+// x/y = pin coords on the 800x500 map
 const ROUNDS = [
-  {
-    id: "supertrees",
-    title: "Supertree Grove",
-    fact: "The Supertrees act as vertical gardens and collect rainwater while generating solar power.",
-    x: 545,
-    y: 315,
-    scene: "supertrees",
-    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Supertree_Grove,_Gardens_by_the_Bay,_Singapore_-_20120704.jpg?width=900"
-  },
 
-  {
-    id: "mbs",
+{
     title: "Marina Bay Sands",
-    fact: "The SkyPark sits atop three hotel towers.",
-    x: 345,
-    y: 345,
-    scene: "mbs",
-    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Infinity_Pool_at_Marina_Bay_Sands_SkyPark_Singapore_Ank_Kumar_Infosys_Limited_01.jpg?width=900"
-  },
+    fact: "The SkyPark sits atop three 55-storey towers and holds the world's largest rooftop infinity pool, longer than three Olympic pools laid end to end.",
+    x:404,
+    y:240,
+    image:"images/mbs.jpg"
+},
 
-  {
-    id: "artscience",
-    title: "ArtScience Museum",
-    fact: "Inspired by a lotus flower.",
-    x: 400,
-    y: 270,
-    scene: "artscience",
-    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Singapore_ArtScience_Museum_3.jpg?width=900"
-  },
+{
+    title:"Helix Bridge",
+    fact:"The bridge's double-helix structure was inspired by the strands of DNA, symbolising life and continuity. It lights up in a different pattern every night.",
+    x:491,
+    y:98,
+    image:"images/helix.jpeg"
+},
 
-  {
-    id: "helix",
-    title: "Helix Bridge",
-    fact: "A pedestrian bridge inspired by DNA.",
-    x: 460,
-    y: 215,
-    scene: "helix",
-    image: "https://commons.wikimedia.org/wiki/Special:FilePath/The_Helix_Bridge,_Singapore.jpg?width=900"
-  },
+{
+    title:"ArtScience Museum",
+    fact:"Shaped like a lotus flower with ten 'fingers', the museum's roof doubles as a rainwater collector, funnelling water into an indoor waterfall during storms.",
+    x:544,
+    y:293,
+    image:"images/art-science.jpeg"
+},
 
-  {
-    id: "merlion",
-    title: "Merlion Park",
-    fact: "Singapore's iconic half-lion, half-fish statue.",
-    x: 520,
-    y: 180,
-    scene: "merlion",
-    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Merlion_Singapore.JPG?width=900"
-  },
+{
+    title:"Merlion Park",
+    fact:"The Merlion has stood watch over the bay since 1972 — half lion, half fish, representing Singapore's original name 'Singapura' (Lion City).",
+    x:515,
+    y:379,
+    image:"images/merlion.jpeg"
+},
 
-  {
-    id: "esplanade",
-    title: "Esplanade",
-    fact: "Known locally as the Durian because of its spiky domes.",
-    x: 610,
-    y: 315,
-    scene: "esplanade",
-    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Singapore_Esplanade_Theatres_on_the_Bay.jpg?width=900"
-  }
+{
+    title:"Supertree Grove",
+    fact:"The Supertrees stand up to 16 storeys tall and act as vertical gardens, collecting rainwater and generating solar power for the conservatories nearby.",
+    x:495,
+    y:298,
+    image:"images/supertrees.jpeg"
+},
+
+{
+    title:"Esplanade",
+    fact:"Locals nicknamed it 'The Durian' for its spiky twin domes, designed to shade the concert halls inside from Singapore's harsh equatorial sun.",
+    x:566,
+    y:341,
+    image:"images/esplanade.jpeg"
+}
+
 ];
 
 const MAX_SCORE_PER_ROUND = 5000;
@@ -158,7 +139,7 @@ function loadRound(){
 function renderPhotoFrame(round){
   const frame = document.getElementById("photo-frame");
   if(!round.image){
-    frame.innerHTML = renderScene(round.scene);
+    frame.innerHTML = renderScene(round);
     return;
   }
   frame.innerHTML = `<div class="photo-loading">Loading photo…</div>`;
@@ -167,7 +148,7 @@ function renderPhotoFrame(round){
   img.decoding = "async";
   img.referrerPolicy = "no-referrer";
   img.onload = () => { frame.innerHTML = ""; frame.appendChild(img); };
-  img.onerror = () => { frame.innerHTML = renderScene(round.scene); };
+  img.onerror = () => { frame.innerHTML = renderScene(round); };
   img.src = round.image;
 }
 
@@ -195,16 +176,11 @@ function clearPins(groupId){
 function drawPin(groupId, x, y, color){
   const g = document.getElementById(groupId);
   const ns = "http://www.w3.org/2000/svg";
-  // Position lives on this OUTER group's transform attribute. It must stay
-  // free of any CSS `transform` (animation/class), because in SVG a CSS
-  // `transform` on an element completely replaces its `transform` attribute
-  // instead of combining with it — that was the bug causing pins to ignore
-  // where you clicked.
+  // outer group = position, inner group = the animated pin
+  // (keep transform off the same el or CSS wipes the position)
   const outer = document.createElementNS(ns, "g");
   outer.setAttribute("transform", `translate(${x},${y})`);
 
-  // The drop animation goes on this INNER group instead, so it animates
-  // relative to (0,0) — which is now correctly the pinned point.
   const pin = document.createElementNS(ns, "g");
   pin.setAttribute("class", "pin");
   pin.innerHTML = `
@@ -301,151 +277,35 @@ function showEndScreen(){
   showScreen("end");
   sky.className = "night";
 
-  const maxPossible = ROUNDS.length * MAX_SCORE_PER_ROUND;
-  document.getElementById("end-score-max").textContent = maxPossible.toLocaleString();
-  animateCount(document.getElementById("end-score"), 0, state.totalScore, 900);
+  const total = ROUNDS.length;
+  const hits = state.roundScores.filter(s => s >= 1500).length;
 
-  const bestIndex = state.roundScores.indexOf(Math.max(...state.roundScores));
-  const bestRound = ROUNDS[state.order[bestIndex]];
-  document.getElementById("stat-best").textContent = bestRound ? bestRound.title : "—";
+  let headline, sub;
+  if(hits === total){
+    headline = "YAYYYYYY YOU GOT THEM ALLLL";
+    sub = `${hits}/${total}, certified bay local fr`;
+  } else if(hits >= total / 2){
+    headline = "YAYYY YOU GOT MOST OF IT RIGHT";
+    sub = `${hits}/${total}, ok that's actually kinda solid`;
+  } else {
+    headline = `${hits}/${total}... bestie`;
+    sub = "go visit the place again pls HAHA";
+  }
 
-  const avgDist = state.roundDistances.reduce((a,b) => a+b, 0) / state.roundDistances.length;
-  document.getElementById("stat-avg-dist").textContent = formatDistance(avgDist).replace("Spot on!", "0 m");
-
-  const perfectCount = state.roundScores.filter(s => s === MAX_SCORE_PER_ROUND).length;
-  document.getElementById("stat-perfect").textContent = `${perfectCount} / ${ROUNDS.length}`;
-
-  renderLeaderboard(state.totalScore);
+  document.querySelector("#screen-end .end-card").innerHTML = `
+    <p class="eyebrow">${headline}</p>
+    <div class="end-score">${state.totalScore.toLocaleString()}</div>
+    <p class="end-score-max">${sub}</p>
+    <button class="btn btn-primary" id="btn-replay">Play again</button>
+  `;
+  document.getElementById("btn-replay").addEventListener("click", startGame);
 }
 
-function renderLeaderboard(playerScore){
-  // Mock leaderboard: a spread of plausible scores so the player's
-  // result lands somewhere realistic in the pack, not always #1.
-  const mockNames = ["JiaHao", "PriyaK", "team_root", "nvm_ide", "hackrbay", "clueless.exe", "TeamOverflow"];
-  const mockScores = mockNames.map(() =>
-    Math.round((8000 + Math.random() * 20000) / 10) * 10
-  );
-
-  const entries = mockNames.map((name, i) => ({ name, score: mockScores[i], isYou: false }));
-  entries.push({ name: "You", score: playerScore, isYou: true });
-  entries.sort((a, b) => b.score - a.score);
-
-  const list = document.getElementById("leaderboard-list");
-  list.innerHTML = "";
-  entries.forEach((entry, i) => {
-    const li = document.createElement("li");
-    if(entry.isYou) li.classList.add("is-you");
-    li.innerHTML = `
-      <span><span class="lb-rank">#${i + 1}</span>${entry.name}</span>
-      <span class="lb-score">${entry.score.toLocaleString()}</span>
-    `;
-    list.appendChild(li);
-  });
-}
-
-document.getElementById("btn-replay").addEventListener("click", startGame);
-
-/* =========================================================
-   Illustrated "photo" scenes — one distinct SVG per landmark.
-   Swap any of these for `<img src="...">` later without
-   touching game logic.
-========================================================= */
-function renderScene(key){
-  const scenes = {
-    supertrees: `
-    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
-      <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#3a1f52"/><stop offset="55%" stop-color="#c1533f"/><stop offset="100%" stop-color="#ffb347"/>
-      </linearGradient></defs>
-      <rect width="400" height="300" fill="url(#g1)"/>
-      <ellipse cx="200" cy="150" rx="90" ry="90" fill="#ffdca0" opacity="0.55"/>
-      <g fill="#160c28">
-        <path d="M120,300 L120,140 Q120,110 150,110 Q180,110 180,140 L180,165 Q180,185 205,185 L230,185" stroke="#160c28" stroke-width="6" fill="none"/>
-        <circle cx="150" cy="100" r="30"/>
-        <path d="M240,300 L240,170 Q240,145 265,145" stroke="#160c28" stroke-width="6" fill="none"/>
-        <circle cx="265" cy="138" r="20"/>
-        <path d="M300,300 L300,190 Q300,170 320,170" stroke="#160c28" stroke-width="6" fill="none"/>
-        <circle cx="320" cy="163" r="15"/>
-      </g>
-    </svg>`,
-    mbs: `
-    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
-      <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#241539"/><stop offset="50%" stop-color="#b1503f"/><stop offset="100%" stop-color="#ffcf7d"/>
-      </linearGradient></defs>
-      <rect width="400" height="300" fill="url(#g2)"/>
-      <rect x="0" y="230" width="400" height="70" fill="#20112f" opacity="0.85"/>
-      <g fill="#140a20">
-        <rect x="150" y="120" width="26" height="130"/>
-        <rect x="188" y="95" width="26" height="155"/>
-        <rect x="226" y="120" width="26" height="130"/>
-        <path d="M140,120 Q200,70 264,120 L264,135 Q200,90 140,135 Z"/>
-      </g>
-      <rect x="0" y="270" width="400" height="30" fill="#0e0818" opacity="0.9"/>
-    </svg>`,
-    helix: `
-    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
-      <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#2b1846"/><stop offset="55%" stop-color="#c65a4a"/><stop offset="100%" stop-color="#ffcf7d"/>
-      </linearGradient></defs>
-      <rect width="400" height="300" fill="url(#g3)"/>
-      <rect x="0" y="240" width="400" height="60" fill="#1b0f2c" opacity="0.85"/>
-      <g fill="none" stroke="#140a20" stroke-width="5">
-        <path d="M20,230 Q120,120 220,230"/>
-        <path d="M60,230 Q160,150 260,230"/>
-        <path d="M100,230 Q200,180 300,230"/>
-        <line x1="20" y1="230" x2="360" y2="230" stroke-width="8"/>
-      </g>
-    </svg>`,
-    merlion: `
-    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
-      <defs><linearGradient id="g4" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#33204d"/><stop offset="55%" stop-color="#d66148"/><stop offset="100%" stop-color="#ffd694"/>
-      </linearGradient></defs>
-      <rect width="400" height="300" fill="url(#g4)"/>
-      <rect x="0" y="235" width="400" height="65" fill="#1c0f2e" opacity="0.85"/>
-      <g fill="#150a24">
-        <path d="M190,240 Q180,180 200,150 Q220,180 210,240 Z"/>
-        <path d="M175,240 Q185,205 200,195 Q215,205 225,240 Z" opacity="0.001"/>
-        <ellipse cx="200" cy="150" rx="18" ry="22"/>
-        <path d="M180,150 Q170,120 185,110 Q195,120 190,145 Z"/>
-        <path d="M215,240 Q260,235 275,255 Q250,260 215,250 Z"/>
-      </g>
-    </svg>`,
-    artscience: `
-    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
-      <defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#291744"/><stop offset="55%" stop-color="#c65546"/><stop offset="100%" stop-color="#ffcf7d"/>
-      </linearGradient></defs>
-      <rect width="400" height="300" fill="url(#g5)"/>
-      <rect x="0" y="245" width="400" height="55" fill="#1a0e2b" opacity="0.85"/>
-      <g fill="#140a20">
-        <path d="M200,245 Q120,245 100,180 Q150,210 200,200 Q250,210 300,180 Q280,245 200,245 Z"/>
-        <path d="M200,200 Q190,150 200,120 Q210,150 200,200 Z"/>
-        <path d="M160,205 Q155,160 175,130 Q185,165 175,205 Z"/>
-        <path d="M240,205 Q245,160 225,130 Q215,165 225,205 Z"/>
-      </g>
-    </svg>`,
-    esplanade: `
-    <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
-      <defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#301c4a"/><stop offset="55%" stop-color="#c9583f"/><stop offset="100%" stop-color="#ffcf7d"/>
-      </linearGradient></defs>
-      <rect width="400" height="300" fill="url(#g6)"/>
-      <rect x="0" y="240" width="400" height="60" fill="#190d2a" opacity="0.85"/>
-      <g fill="#140a20">
-        <circle cx="150" cy="200" r="55"/>
-        <circle cx="255" cy="200" r="55"/>
-        <g stroke="#301c4a" stroke-width="2">
-          <line x1="150" y1="145" x2="150" y2="255"/>
-          <line x1="120" y1="155" x2="180" y2="245"/>
-          <line x1="180" y1="155" x2="120" y2="245"/>
-          <line x1="255" y1="145" x2="255" y2="255"/>
-          <line x1="225" y1="155" x2="285" y2="245"/>
-          <line x1="285" y1="155" x2="225" y2="245"/>
-        </g>
-      </g>
-    </svg>`
-  };
-  return scenes[key] || "";
+function renderScene(round) {
+  return `
+    <div class="photo-fallback">
+      <p class="photo-fallback-title">Photo unavailable</p>
+      <p class="photo-fallback-sub">${round.title}</p>
+    </div>
+  `;
 }
