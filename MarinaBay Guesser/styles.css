@@ -203,6 +203,15 @@ h1, h2, h3{ font-family: var(--font-display); margin: 0; }
   border: 1px solid var(--glass-border);
 }
 .photo-frame svg{ width:100%; height:100%; display:block; }
+.photo-frame img{ width:100%; height:100%; display:block; object-fit:cover; }
+.photo-loading, .photo-fallback{
+  width:100%; height:100%; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:6px;
+  color: var(--text-lo); font-size:13px; background: rgba(255,255,255,0.03);
+  text-align:center; padding: 20px;
+}
+.photo-fallback-title{ margin:0; font-weight:600; color: var(--text-hi); }
+.photo-fallback-sub{ margin:0; color: var(--text-lo); }
 .photo-caption{ margin:0; color: var(--text-lo); font-size:14px; text-align:center; }
 
 .map-wrap{ position:relative; border-radius:12px; overflow:hidden; border: 1px solid var(--glass-border); flex:1; aspect-ratio: 8/5; }
